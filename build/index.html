@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="tagchecker.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="textbackground">
+        <h1 class="setlocation">Welcome to Tag Checker</h1>
+        <h3 class="setlocation">Type HTML text (including tags)</h3>
+        <div class="setlocation">
+            <input class="textboxstyle" type="text" id="inputbox" name="inputbox" onfocus="this.value=''"/>
+            <input class="buttonSize" type="submit" value="Submit" onclick="TagChecker(document.getElementById('inputbox').value)" />
+        </div>
+        <p class="setlocation resulttextsize" id="result"></p>
+    </div>
+</body>
+</html>
