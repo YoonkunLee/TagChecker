@@ -112,4 +112,4 @@ function TestTagChecker(text) {
     return CheckVaildation(resultTag);
 }
 
-module.exports ={TestTagChecker, CheckVaildation, CollectTags}
+module.exports ={TestTagChecker, CheckVaildation}
