@@ -6,6 +6,9 @@
   "scripts": {
     "test": "mocha"
   },
+  "devDependencies": {
+    "mocha": "^8.1.3"
+  },
   "author": "Yoonkun Lee",
   "license": "ISC",
   "dependencies": {

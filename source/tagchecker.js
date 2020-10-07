@@ -1,115 +1,109 @@
-let text ="";
-let stack = [];
-let resultString = [];
-let tags = [];
-
 //Take input string and collect tags 
 //Return array of tags
 function CollectTags(text)
 {
-    this.text = text;
-    let tag = "";
+    let tags = [];
     //Collect each char from text and define tags
     //If find tags, store that tag into tags array
-    for (let j = 0; j < this.text.length; j++)
+    for (let j = 0; j < text.length; j++)
     {
-        if (this.text.charAt(j) == '<') {
-           
+        if (text.charAt(j) == '<') {         
             if (text.charAt(j + 1) == '/') {
-                tag = "/";
-                TagCheckLastTwoChar(j + 2, tag);                                                
+                let tag = '/' + TagCheckLastTwoChar(j + 2, text);  
+                checkResultAndPush(tag, tags)
             }
             else {
-                TagCheckLastTwoChar(j + 1, tag);               
+                let tag = TagCheckLastTwoChar(j + 1, text);  
+                checkResultAndPush(tag, tags)             
             }
         }
-        tag = "";
     }
-    let returnArray = tags;
-    //clear tags array for memory leak
-    tags = [];
-    return returnArray;
+    return tags;
+}
+
+function checkResultAndPush(tag, tags){
+    if(tag != null && tag != "/null" ){
+        tags.push(tag);
+    }
 }
 
 //Define last two charcters are match with tags 
-function TagCheckLastTwoChar(index, tag)
-{
-    let completetag;
-    if (this.text.charAt(index).match(/[a-zA-Z]/i)) {
-        if (this.text.charAt(index).toUpperCase() == this.text.charAt(index)) {
-            if (this.text.charAt(index + 1) == '>') {
-                tag += this.text.charAt(index);
-                completetag = tag;
-            }
-            tags.push(completetag);
+function TagCheckLastTwoChar(index, text)
+{   
+    if (text.charAt(index).match(/[A-Z]/)) {
+        if (text.charAt(index + 1) == '>') {
+            return text.charAt(index);
         }
+        else return null;  
     }
+    else return null;
 }
 
-function CheckVaildation(tags) {
-    let checkTags = tags; 
-    let stackLength
-    let vaild = true;
-    resultString = "";
+function CheckValidation(tags) {
+    let Valid = true;
+    let stack = [];
+    let resultString;
 
-    for (let i = 0; i < checkTags.length; i++) {
+    for (let i = 0; i < tags.length; i++) {
         //From array tags list, find Opening tag to store in the stack array, or find cloing tag to pass other condition
-        if (checkTags[i].charAt(0) == '/') {
-            stackLength = stack.length;
+        if (tags[i].charAt(0) == '/') {
             //Check stack length, if it is 0 opening tag forgetting issue
-            if (stackLength != 0) {      
+            if (stack != 0) {      
                 //If current closing tag is match with opening tag from last stack array, delete last stack element            
-                if (stack[stackLength - 1].charAt(0) == checkTags[i].charAt(1)) {
-                    stack.splice(stackLength - 1, stackLength);
+                if (stack[stack.length - 1].charAt(0) == tags[i].charAt(1)) {
+                    stack.pop(stack[stack.length - 1]);
                 }
                 //If current closing tag is not match with opening tag from last stack array, nesting tag issue
                 else {
-                    resultString = "Expected </" + stack[stackLength - 1] + "> found <" + checkTags[i] + ">";
-                    vaild = false;
+                    resultString = "Expected </" + stack[stack.length - 1] + "> found <" + tags[i] + ">";
+                    Valid = false;
                     break;
                 }
             }
             else {
-                resultString = "Expected # found <" + checkTags[i] + ">";
-                vaild = false;
+                resultString = "Expected # found <" + tags[i] + ">";
+                Valid = false;
                 break;
             }
         }
         else {           
-            let tag = checkTags[i];
+            let tag = tags[i];
             stack.push(tag);
         }
     }
     //If stack array has element, it is close tag forgetting issue
-    if (stack.length > 0 && vaild == true) {
+    if (stack.length > 0 && Valid == true) {
         resultString = "Expected </" + stack[stack.length -1] + "> found #";
-        vaild = false;
+        Valid = false;
     }
 
-    if (vaild == true) {
+    if (Valid == true) {
         resultString = "Correctly tagged paragraph";
     }
 
-    stack = [];
-    checkTags = null;
-    tags = [];
-
     return resultString;
 }
-//Return result and show in HTML 
+
 function TagChecker(text) {
     let resultTag = CollectTags(text);
+
     if(resultTag.length > 0){
-        $("p").text(CheckVaildation(resultTag));
+        return CheckValidation(resultTag);
+    }
+    else{
+        return null
+    }
+}
+
+//Return result and show in HTML 
+function PrintTagChecker(text) {
+    var resultString = TagChecker(text);
+    if(resultString != null){
+        $("p").text(resultString);
     }
     else{
         $("p").text("No tags found! Please Try Again!");
     } 
 }
 
-function TestTagChecker(text) {
-    let resultTag = CollectTags(text);
-    return CheckVaildation(resultTag);
-}
-
-module.exports ={TestTagChecker, CheckVaildation}
+module.exports = {TagChecker, CheckValidation, CollectTags}
