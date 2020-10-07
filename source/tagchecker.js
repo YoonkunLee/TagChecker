@@ -1,17 +1,17 @@
-var text;
-var stack = [];
-var resultString = [];
-var tags = [];
+let text ="";
+let stack = [];
+let resultString = [];
+let tags = [];
 
 //Take input string and collect tags 
 //Return array of tags
 function CollectTags(text)
 {
     this.text = text;
-    var tag = "";
+    let tag = "";
     //Collect each char from text and define tags
     //If find tags, store that tag into tags array
-    for (var j = 0; j < this.text.length; j++)
+    for (let j = 0; j < this.text.length; j++)
     {
         if (this.text.charAt(j) == '<') {
            
@@ -25,7 +25,7 @@ function CollectTags(text)
         }
         tag = "";
     }
-    var returnArray = tags;
+    let returnArray = tags;
     //clear tags array for memory leak
     tags = [];
     return returnArray;
@@ -34,7 +34,7 @@ function CollectTags(text)
 //Define last two charcters are match with tags 
 function TagCheckLastTwoChar(index, tag)
 {
-    var completetag;
+    let completetag;
     if (this.text.charAt(index).match(/[a-zA-Z]/i)) {
         if (this.text.charAt(index).toUpperCase() == this.text.charAt(index)) {
             if (this.text.charAt(index + 1) == '>') {
@@ -47,12 +47,12 @@ function TagCheckLastTwoChar(index, tag)
 }
 
 function CheckVaildation(tags) {
-    var checkTags = tags; 
-    var stackLength
-    var vaild = true;
+    let checkTags = tags; 
+    let stackLength
+    let vaild = true;
     resultString = "";
 
-    for (var i = 0; i < checkTags.length; i++) {
+    for (let i = 0; i < checkTags.length; i++) {
         //From array tags list, find Opening tag to store in the stack array, or find cloing tag to pass other condition
         if (checkTags[i].charAt(0) == '/') {
             stackLength = stack.length;
@@ -76,7 +76,7 @@ function CheckVaildation(tags) {
             }
         }
         else {           
-            var tag = checkTags[i];
+            let tag = checkTags[i];
             stack.push(tag);
         }
     }
@@ -98,7 +98,7 @@ function CheckVaildation(tags) {
 }
 //Return result and show in HTML 
 function TagChecker(text) {
-    var resultTag = CollectTags(text);
+    let resultTag = CollectTags(text);
     if(resultTag.length > 0){
         $("p").text(CheckVaildation(resultTag));
     }
@@ -106,3 +106,10 @@ function TagChecker(text) {
         $("p").text("No tags found! Please Try Again!");
     } 
 }
+
+function TestTagChecker(text) {
+    let resultTag = CollectTags(text);
+    return CheckVaildation(resultTag);
+}
+
+module.exports ={TestTagChecker, CheckVaildation, CollectTags}
