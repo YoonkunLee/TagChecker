@@ -1,10 +1,9 @@
-//Take input string and collect tags 
-//Return array of tags
+// Take input string and find & collect tags 
 function CollectTags(text)
 {
     let tags = [];
-    //Collect each char from text and define tags
-    //If find tags, store that tag into tags array
+    // Collect each char from text and define tags
+    // If find tags, store that tag into tags array
     for (let j = 0; j < text.length; j++)
     {
         if (text.charAt(j) == '<') {         
@@ -27,16 +26,17 @@ function checkResultAndPush(tag, tags){
     }
 }
 
-//Define last two charcters are match with tags 
+// Define last two charcters are match with tags 
 function TagCheckLastTwoChar(index, text)
 {   
-    if (text.charAt(index).match(/[A-Z]/)) {
-        if (text.charAt(index + 1) == '>') {
-            return text.charAt(index);
-        }
-        else return null;  
+    if (!text.charAt(index).match(/[A-Z]/)) {
+        return null;
     }
-    else return null;
+    
+    if (text.charAt(index + 1) == '>') {
+        return text.charAt(index);
+    }
+    else return null;  
 }
 
 function CheckValidation(tags) {
@@ -45,15 +45,15 @@ function CheckValidation(tags) {
     let resultString;
 
     for (let i = 0; i < tags.length; i++) {
-        //From array tags list, find Opening tag to store in the stack array, or find cloing tag to pass other condition
+        // From array tags list, find Opening tag to store in the stack array, or find cloing tag to pass other condition
         if (tags[i].charAt(0) == '/') {
             //Check stack length, if it is 0 opening tag forgetting issue
             if (stack != 0) {      
-                //If current closing tag is match with opening tag from last stack array, delete last stack element            
+                // If current closing tag is match with opening tag from last stack array, delete last stack element            
                 if (stack[stack.length - 1].charAt(0) == tags[i].charAt(1)) {
                     stack.pop(stack[stack.length - 1]);
                 }
-                //If current closing tag is not match with opening tag from last stack array, nesting tag issue
+                // If current closing tag is not match with opening tag from last stack array, nesting tag issue
                 else {
                     resultString = "Expected </" + stack[stack.length - 1] + "> found <" + tags[i] + ">";
                     Valid = false;
@@ -71,7 +71,7 @@ function CheckValidation(tags) {
             stack.push(tag);
         }
     }
-    //If stack array has element, it is close tag forgetting issue
+    // If stack array has element, it is close tag forgetting issue
     if (stack.length > 0 && Valid == true) {
         resultString = "Expected </" + stack[stack.length -1] + "> found #";
         Valid = false;
@@ -91,11 +91,11 @@ function TagChecker(text) {
         return CheckValidation(resultTag);
     }
     else{
-        return null
+        return null;
     }
 }
 
-//Return result and show in HTML 
+// Return result and display in HTML 
 function PrintTagChecker(text) {
     var resultString = TagChecker(text);
     if(resultString != null){
@@ -106,4 +106,4 @@ function PrintTagChecker(text) {
     } 
 }
 
-module.exports = {TagChecker, CheckValidation, CollectTags}
+module.exports = { TagChecker, CheckValidation, CollectTags }
