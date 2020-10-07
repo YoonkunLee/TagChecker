@@ -1,3 +1,6 @@
+0. Open terminal & Install modules 
+-> npm install 
+
 1. Testing Functions commend
 -> npm test
 
