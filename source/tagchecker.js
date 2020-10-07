@@ -47,7 +47,7 @@ function CheckValidation(tags) {
     for (let i = 0; i < tags.length; i++) {
         // From array tags list, find Opening tag to store in the stack array, or find cloing tag to pass other condition
         if (tags[i].charAt(0) == '/') {
-            //Check stack length, if it is 0 opening tag forgetting issue
+            // Check stack length, if it is 0 opening tag forgetting issue
             if (stack != 0) {      
                 // If current closing tag is match with opening tag from last stack array, delete last stack element            
                 if (stack[stack.length - 1].charAt(0) == tags[i].charAt(1)) {
